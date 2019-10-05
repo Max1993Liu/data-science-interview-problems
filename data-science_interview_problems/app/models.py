@@ -47,9 +47,23 @@ class Question(db.Model):
 	__tablename__ = 'question'
 
 	id = db.Column(db.Integer, primary_key=True)
-	question = db.Column(db.PickleType)
+	content = db.Column(db.PickleType)
 	
+	answer = db.relationship('Answer', backref='answer', uselist=False, lazy=True)
 	annotations = db.relationship('Annotation', backref='question', lazy=True)
+
+	def __repr__(self):
+		return '<Question {}>'.format(self.id)
+
+
+class Answer(db.Model):
+	__tablename__ = 'answer'
+
+	id = db.Column(db.Integer, primary_key=True)
+	content = db.Column(db.PickleType)
+
+	# foreign keys
+	question_id = db.Column(db.Integer, db.ForeignKey('question.id')) 
 
 	def __repr__(self):
 		return '<Question {}>'.format(self.id)

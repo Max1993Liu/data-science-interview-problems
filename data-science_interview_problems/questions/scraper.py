@@ -53,37 +53,37 @@ def get_content(url):
 		raise ValueError("Failed to parse url: {}".format(url))
 
 
-# if __name__ == 'main':
+if __name__ == '__main__':
 
-import dill
+	import pickle
 
-content = []
+	content = []
 
-cid = 0
-while True:
-	url = 'https://mp.weixin.qq.com/mp/homepage?__biz=MzIzMDA1MTM3Mg==&hid=7&sn=eb1bafd2f52396868dd0d37801758f5b&scene=1&devicetype=iOS12.4&version=17000529&lang=zh_CN&nettype=3G+&ascene=7&session_us=gh_fb56fa7dda76&fontScale=100&wx_header=1&cid={}&begin=0&count=100&action=appmsg_list&f=json&r=0.5466809010203566&appmsg_token='.format(cid)
-	
-	page = requests.post(url)
-	assert page.status_code == 200
-	pages = page.json()['appmsg_list']		
+	cid = 0
+	while True:
+		url = 'https://mp.weixin.qq.com/mp/homepage?__biz=MzIzMDA1MTM3Mg==&hid=7&sn=eb1bafd2f52396868dd0d37801758f5b&scene=1&devicetype=iOS12.4&version=17000529&lang=zh_CN&nettype=3G+&ascene=7&session_us=gh_fb56fa7dda76&fontScale=100&wx_header=1&cid={}&begin=0&count=100&action=appmsg_list&f=json&r=0.5466809010203566&appmsg_token='.format(cid)
+		
+		page = requests.post(url)
+		assert page.status_code == 200
+		pages = page.json()['appmsg_list']		
 
-	if len(pages) == 0:
-		break
+		if len(pages) == 0:
+			break
 
-	for p in pages:
-		try:
-			q_id = int(''.join([ch for ch in p['title'] if ch.isdigit()]))
-			q, a = get_content(p['link'])
+		for p in pages:
+			try:
+				q_id = int(''.join([ch for ch in p['title'] if ch.isdigit()]))
+				q, a = get_content(p['link'])
 
-			content.append(Question(id=q_id, content=q))
-			content.append(Answer(id=q_id, content=a))
+				content.append(Question(id=q_id, content=q))
+				content.append(Answer(id=q_id, content=a))
 
-			print('面试题 {}: Success.'.format(q_id))
-		except Exception as e:
-			print('面试题 {}: Failed.'.format(p['title']))
-			print(p['link'])
-	
-	cid += 1
+				print('面试题 {}: Success.'.format(q_id))
+			except Exception as e:
+				print('面试题 {}: Failed.'.format(p['title']))
+				print(p['link'])
+		
+		cid += 1
 
-with open('./data/数据应用学院每日一题.pkl', 'wb') as f:
-	dill.dump(content, f)
+	with open('./data/数据应用学院每日一题.pkl', 'wb') as f:
+		pickle.dump(content, f)

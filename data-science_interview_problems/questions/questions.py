@@ -1,5 +1,5 @@
 import bisect
-import dill
+import pickle
 from bs4 import BeautifulSoup
 
 
@@ -39,7 +39,7 @@ class HTMLMixin:
 	def save(self, path):
 		with open(path, 'wb') as f:
 			# save a dictionary
-			dill.dump(self.to_dict(), f)
+			pickle.dump(self.to_dict(), f)
 
 	def load(self, path):
 		with open(path, 'rb') as f:
@@ -51,7 +51,7 @@ class HTMLMixin:
 	@classmethod
 	def from_file(cls, path):
 		with open(path, 'rb') as f:
-			content = dill.load(f)
+			content = pickle.load(f)
 		return cls(**content)
 
 
