@@ -18,11 +18,29 @@ def before_request():
         db.session.commit()
 
 
+
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
+    """ Main page """
     return render_template('index.html')
+
+
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    """ User profile page """
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('user.html', user=user)
+
+
+@app.route('/questions')
+@login_required
+def question():
+    """ question page """
+    return render_template('questions.html', questions=questions)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -63,13 +81,6 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html', form=form)
-
-
-@app.route('/user/<username>')
-@login_required
-def user(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user)
 
 
 @app.route('/logout')

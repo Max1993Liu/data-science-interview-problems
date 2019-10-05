@@ -1,6 +1,9 @@
+<!DOCTYPE html>
 <html>
     <head>
-      <title>Data Science Practice Problems</title>
+        <meta charset="UTF-8">
+        <title>Data Science Practice Problems</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     </head>
 
     <body>
@@ -11,9 +14,11 @@
         {% else %}
         <a href="{{ url_for('logout') }}">Logout</a>
         <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+        <a href="{{ url_for('question') }}">Questions</a>
         {% endif %}
         <hr>
 
+       <!-- display flash messages -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
@@ -23,8 +28,9 @@
         </ul>
         {% endif %}
         {% endwith %}
-        
-
+         
         {% block content %}{% endblock %}
+
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     </body>
 </html>

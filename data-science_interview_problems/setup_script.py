@@ -44,5 +44,6 @@ for obj in content:
 		db.session.add(db_Question(id=obj.id, content=obj))
 	else:
 		db.session.add(db_Answer(id=obj.id, content=obj))
+	
 	db.session.commit()
 

@@ -55,6 +55,18 @@ class Question(db.Model):
 	def __repr__(self):
 		return '<Question {}>'.format(self.id)
 
+	def get_html(self):
+		return self.content.get_html()
+
+	def get_text(self):
+		return self.content.get_text()
+
+	def get_html_answer(self):
+		return self.answer.content.get_html()
+
+	def get_text_answer(self):
+		return self.answer.content.get_text()
+
 
 class Answer(db.Model):
 	__tablename__ = 'answer'
