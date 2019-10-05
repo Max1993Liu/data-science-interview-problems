@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <table>
+        <tr valign="top">
+            <td><img src="{{ user.get_avatar(128) }}"></td>
+            <td><h1>{{ user.username }}</h1></td>
+        </tr>
+    </table>
+    
+    <hr>
+    
+    <p><b>
+    	You have finished {{ user.n_finished_questions() }} questions!
+    </b></p>
+
+    {% if user.last_seen %}
+    <p><b>
+    	Last seen on {{ user.last_seen }}
+    </b></p>
+    {% endif %}
+    
+{% endblock %}

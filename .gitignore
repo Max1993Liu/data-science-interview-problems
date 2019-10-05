@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# subdirectories
+**/__pycache__/
+**/data/*
+
