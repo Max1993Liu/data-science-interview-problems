@@ -1,17 +1,45 @@
 {% extends "base.html" %}
 
+{% block script %}
+
+    <script>
+
+	$(function(){
+		$(".ui.raised.segment").click(function() {
+			var modalId = "#" + $(this).attr("id") + "_modal"
+			$(modalId).modal("show")
+		})		
+
+	})
+
+    </script>
+
+
+{% endblock %}
+
+
 {% block content %}
 	<h1>questions:</h1>
 
 	<div class="ui three column stackable grid container">
        {% for question in questions %}
-       	   <div class="column">
-	       	   <div class="ui raised segment">
-	            {{ question.get_short_question(max_length=200) }}
-		       	<hr>
-	       		{{ question.get_short_answer(max_length=200) }}
+      	   <div class="column">
+	       	   <div id="q{{ question.id }}" class="ui raised segment">
+		            {{ question.get_short_question(max_length=200) }}
+			       	<hr>
+		       		{{ question.get_short_answer(max_length=200) }}
 		       </div>
-		   </div>
+		    </div>
+		
+		    <!-- add modal -->
+		    <div id="q{{ question.id }}_modal" class="ui modal">
+		    	<div class="header">Question {{ question.id}}</div>
+		    	<div class="scrolling content">
+		            {{ question.get_text() }}
+			       	<hr>
+		       		{{ question.get_text_answer() }}
+	       		</div>
+	       	</div>
 		{% endfor %}	
     </div>
 
