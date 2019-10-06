@@ -5,7 +5,7 @@ from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user
 from flask_login import login_required
 
-from app.models import User
+from app.models import User, Question, Answer, Annotation
 from app import app
 from app import db
 from .forms import LoginForm, RegistrationForm
@@ -39,6 +39,10 @@ def user(username):
 @login_required
 def question():
     """ question page """
+
+    # list all the questions
+    questions = Question.query.all()
+
     return render_template('questions.html', questions=questions)
 
 

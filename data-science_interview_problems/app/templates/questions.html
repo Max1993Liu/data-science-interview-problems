@@ -3,20 +3,16 @@
 {% block content %}
 	<h1>questions:</h1>
 
-	<div class="ui four column stackable grid container">
-        <div v-for="talk in talks" class="column">
-            <div class="ui card">
-                <div class="content">
-                    <div class="header">[[ talk.name ]]</div>
-                    <div class="meta">[[ talk.speaker ]]</div>
-                    <div class="description">[[ talk.description ]]</div>
-                </div>
-                <div class="extra content">
-                    <i class="check icon"></i>
-                    [[ talk.number_of_views ]] Views
-                </div>
-            </div>
-        </div>
+	<div class="ui three column stackable grid container">
+       {% for question in questions %}
+       	   <div class="column">
+	       	   <div class="ui raised segment">
+	            {{ question.get_short_question(max_length=200) }}
+		       	<hr>
+	       		{{ question.get_short_answer(max_length=200) }}
+		       </div>
+		   </div>
+		{% endfor %}	
     </div>
 
 

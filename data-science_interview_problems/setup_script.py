@@ -37,13 +37,15 @@ with open('./questions/data/数据应用学院每日一题.pkl', 'rb') as f:
 	content = pickle.load(f)
 
 for obj in content:
+	if len(obj.get_text().strip()) == 0:
+		continue
+
 	if obj.id in existing_ids:
 		continue
 
 	if obj.__class__.__name__ == 'Question':
-		db.session.add(db_Question(id=obj.id, content=obj))
+		db.session.add(db_Question(id=obj.id, content=obj, source='数据应用学院'))
 	else:
-		db.session.add(db_Answer(id=obj.id, content=obj))
+		db.session.add(db_Answer(question_id=obj.id, content=obj))
 	
 	db.session.commit()
-

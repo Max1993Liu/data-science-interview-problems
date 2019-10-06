@@ -1,5 +1,6 @@
 from datetime import datetime
 from hashlib import md5
+import re
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -48,24 +49,51 @@ class Question(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True)
 	content = db.Column(db.PickleType)
-	
+	source = db.Column(db.String(124), default='')
+
 	answer = db.relationship('Answer', backref='answer', uselist=False, lazy=True)
 	annotations = db.relationship('Annotation', backref='question', lazy=True)
 
 	def __repr__(self):
 		return '<Question {}>'.format(self.id)
 
+	@staticmethod
+	def remove_extra_space(s):
+		return re.sub('\s+', ' ', s).strip()
+
 	def get_html(self):
 		return self.content.get_html()
 
 	def get_text(self):
-		return self.content.get_text()
+		return self.remove_extra_space(self.content.get_text())
+
+	def get_short_question(self, max_length=200):
+		question = self.get_text()
+		if len(question) > max_length:
+			return question[:max_length] + '......'
+		else:
+			return question
 
 	def get_html_answer(self):
-		return self.answer.content.get_html()
+		answer = self.answer
+		if self.answer is None:
+			return 'No answer available'
+		else:
+			return self.answer.content.get_html()
 
 	def get_text_answer(self):
-		return self.answer.content.get_text()
+		answer = self.answer
+		if self.answer is None:
+			return 'No answer available'
+		else:
+			return self.remove_extra_space(self.answer.content.get_text())
+
+	def get_short_answer(self, max_length=200):
+		answer = self.get_text_answer()
+		if len(answer) > max_length:
+			return answer[:max_length] + '......'
+		else:
+			return answer
 
 
 class Answer(db.Model):
@@ -78,7 +106,7 @@ class Answer(db.Model):
 	question_id = db.Column(db.Integer, db.ForeignKey('question.id')) 
 
 	def __repr__(self):
-		return '<Question {}>'.format(self.id)
+		return '<Answer {}>'.format(self.id)
 
 
 class Annotation(db.Model):
